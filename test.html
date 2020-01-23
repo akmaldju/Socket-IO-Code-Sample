@@ -1,0 +1,52 @@
+<!-- Simple JavaScript WebSocket Client -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Playground</title>
+    <style>
+      #state, #status, #personInCharge {
+        display: flex;
+        flex-direction: row;
+        width: 60vw;
+        height: 50px;
+        margin-bottom: 20px;
+        align-items: center;
+        justify-content: space-around;
+      }
+      #state input, #status input, #personInCharge input {
+        flex-basis: 30%;
+        height: 50px;
+        padding-left: 8px;
+      }
+      #stateText, #statusText, #picText {
+        font-size: large;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cont">
+      <h1>JSON Objects from WebSocket will appear at the bottom:</h1>
+    </div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    //To connect to WebSocket
+    const socket = io();
+
+    console.log("WebSocket Client Connected");
+    // Send a message to WebSocket Server
+    socket.emit("message", "Hi this is web client.");
+
+    socket.on("CUSTOM_EVENT", function(e) {
+      console.log("Received: ");
+      console.log(e);
+      var child = document.createElement("div");
+      child.innerHTML = "<p>" + JSON.stringify(e) + "</p>";
+      child = child.firstChild;
+      document.getElementById("cont").appendChild(child);
+
+      socket.emit("message", "ok");
+    });
+
+  </script>
+</html>
